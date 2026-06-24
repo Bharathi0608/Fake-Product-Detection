@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Fake Product Identification</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/style.css">
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: 'Roboto', sans-serif;
+      }
+      .header-section {
+        background: linear-gradient(135deg, #4CAF50 0%, #4CAF50 100%);
+        color: white;
+        padding: 30px 0;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      .header-section h1 {
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .header-section p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+      .content-section {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 25px;
+        margin-bottom: 30px;
+      }
+      .nav-tabs {
+        border-bottom: 2px solid #e9ecef;
+        margin-bottom: 20px;
+      }
+      .nav-tabs .nav-link {
+        border: none;
+        color: #495057;
+        font-weight: 500;
+        padding: 12px 25px;
+      }
+      .nav-tabs .nav-link.active {
+        color: #1a237e;
+        border-bottom: 3px solid #1a237e;
+        background-color: transparent;
+      }
+      .form-control {
+        border-radius: 4px;
+        padding: 12px 15px;
+        border: 1px solid #ced4da;
+      }
+      .btn-warning {
+        background-color: #ff9800;
+        border-color: #ff9800;
+        color: white;
+        font-weight: 500;
+        padding: 12px 30px;
+        border-radius: 4px;
+      }
+      .btn-warning:hover {
+        background-color: #f57c00;
+        border-color: #f57c00;
+      }
+      .matrix {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .matrix td {
+        padding: 10px;
+      }
+      .matrix label {
+        font-weight: 500;
+        margin-bottom: 5px;
+        display: block;
+      }
+      .qr-scanner-container {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      #qr-reader {
+        margin: 0 auto;
+      }
+      #qr-reader-results {
+        margin-top: 10px;
+        font-weight: 500;
+        color: #1a237e;
+      }
+    </style>
+	</head>
+	<body>
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="container">
+        <h1>BLOCKCHAIN POWERED FAKE PRODUCT DETECTION</h1>
+        <p>Sell Product to Seller - Transfer product ownership through blockchain</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Navigation Tabs -->
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link active" href="sellProductManufacturer.html">Sell to Seller</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="querySeller.html">Query Seller</a>
+        </li>
+       
+     
+      </ul>
+
+      <!-- QR Scanner Section -->
+      <div class="content-section">
+        <h2>Scan Product QR Code</h2>
+        <p>Use the scanner below to read the product QR code</p>
+        
+        <div class="qr-scanner-container">
+          <div id="qr-reader" style="width:300px"></div>
+          <div id="qr-reader-results"></div>
+        </div>
+      </div>
+
+      <!-- Sell Product Form Section -->
+      <div class="content-section">
+        <h2>Sell Product to Seller</h2>
+        <p>Enter product and seller details to transfer ownership</p>
+        
+        <div class="matrix">
+          <table width="100%">
+            <tr width="100%">
+              <td width="15%" align="center">
+                <label for="productSN">Product SN:</label>
+              </td>
+              <td width="30%">
+                <input disabled class="form-control" id="productSN" name="productSN" type="text" placeholder="Scanned QR code will appear here" />
+              </td>
+              <td width="15%" align="center">
+                <label for="sellerCode">Seller Code</label>
+              </td>
+              <td width="30%">
+                <input class="form-control" id="sellerCode" name="sellerCode" type="text" placeholder="Enter Seller Code" />
+              </td>
+            </tr>
+          </table>
+        </div>
+        
+        <div class="clear">&nbsp;</div>
+        <div align="center">
+          <button type="button" class="btn btn-warning btn-register" id="register">
+    Sell to Seller
+</button>
+          <!-- <button type="submit" class="btn btn-warning btn-register" id="register">Sell to Seller</button> -->
+        </div>
+      </div>
+    </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="js/popper.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <!-- <script src="js/main.js"></script> -->
+  <!-- <script src="js/web3.min.js"></script> -->
+  <script src="js/truffle-contract.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+  <script src="js/sellProductManufacturer.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script>
+    // Check if in demo mode
+const isDemoMode = localStorage.getItem('demoMode') === 'true';
+
+if (isDemoMode && typeof window.demoProductContract !== 'undefined') {
+    // Use demo functions
+    console.log('Using demo mode for contract interactions');
+    
+    // Example for addProduct.html:
+    document.getElementById('addProductForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const productName = document.getElementById('productName').value;
+        const productSN = document.getElementById('productSN').value;
+        const productBrand = document.getElementById('productBrand').value;
+        const productPrice = document.getElementById('productPrice').value;
+        const manufacturerId = localStorage.getItem('demoManufacturerId');
+        
+        // Use demo contract
+        const result = await window.demoProductContract.demoAddProduct(
+            productName, productSN, productBrand, productPrice
+        );
+        
+        alert(result.message);
+        
+        // Reset form
+        this.reset();
+    });
+}
+	var decodedText = "Enter Product SN";
+     function docReady(fn) {
+        // see if DOM is already available
+        if (document.readyState === "complete"
+           || document.readyState === "interactive") {
+	        // call on next available tick
+           setTimeout(fn, 1);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+    } 
+
+ docReady(function () {
+
+    function onScanSuccess(decodedText, decodedResult) {
+
+        document.getElementById('qr-reader-results').innerHTML = decodedText;
+        document.getElementById("productSN").value = decodedText;
+    }
+
+    function onScanFailure(error) {
+        // Silent failure (normal when no QR detected)
+    }
+
+    const html5QrcodeScanner = new Html5QrcodeScanner(
+        "qr-reader",
+        {
+            fps: 10,
+            qrbox: { width: 250, height: 250 },
+            rememberLastUsedCamera: true,
+            supportedScanTypes: [
+                Html5QrcodeScanType.SCAN_TYPE_CAMERA,
+                Html5QrcodeScanType.SCAN_TYPE_FILE
+            ]
+        },
+        false
+    );
+
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    });
+  </script>
+  </body>
+</html>

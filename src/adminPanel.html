@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Fake Product Identification - Admin Panel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: 'Roboto', sans-serif;
+      }
+      .header-section {
+        background: linear-gradient(135deg, #4CAF50 0%, #4CAF50 100%);
+        color: white;
+        padding: 30px 0;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      .content-section {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 30px;
+        margin-bottom: 30px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        font-weight: 500;
+        margin-bottom: 5px;
+        display: block;
+      }
+      .form-control {
+        border-radius: 4px;
+        padding: 10px 15px;
+        border: 1px solid #ced4da;
+        width: 100%;
+      }
+      .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+      .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 4px;
+        cursor: pointer;
+        border: none;
+        font-size: 16px;
+      }
+      .btn-primary:hover {
+        background-color: #0056b3;
+      }
+      #manufacturerDetails {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+      }
+      #manufacturerDetails p {
+        margin: 10px 0;
+      }
+      .demo-address-btn {
+        background-color: #9C27B0;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+        display: block;
+      }
+      .demo-address-btn:hover {
+        background-color: #7B1FA2;
+      }
+      .test-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 1000;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header-section">
+      <div class="container">
+        <h1>BLOCKCHAIN POWERED FAKE PRODUCT DETECTION</h1>
+        <p>Admin Panel - Manufacturer Verification</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="manufacturerRegistration.html">Register Manufacturer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="adminPanel.html">Admin Panel</a>
+        </li>
+      </ul>
+
+      <div class="content-section">
+        <h2>Manufacturer Verification</h2>
+        <p>Enter a manufacturer's wallet address to view details and verify their registration.</p>
+        
+        <div class="form-group">
+          <label>Manufacturer Wallet Address</label>
+          <input class="form-control" id="manufacturerAddress" type="text" placeholder="0x..." value="0x265411232A8763D2E51F862942f9bE4984981d49" />
+        </div>
+
+        <div align="center">
+          <button type="button" class="btn btn-primary" id="viewManufacturerBtn">View Manufacturer Details</button>
+        </div>
+
+        <button type="button" class="demo-address-btn" onclick="pasteDemoAddress()">
+          Click to Paste Demo Address
+        </button>
+
+        <div id="manufacturerDetails"></div>
+      </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    
+    <script>
+      App = {
+        web3Provider: null,
+        contracts: {},
+        account: '0x0',
+
+        init: async function() {
+          return await App.initWeb3();
+        },
+
+        initWeb3: async function() {
+          if (window.ethereum) {
+            App.web3Provider = window.ethereum;
+            try {
+              await window.ethereum.request({ method: 'eth_requestAccounts' });
+            } catch (error) {
+              console.error("User denied account access");
+            }
+          } else if (window.web3) {
+            App.web3Provider = window.web3.currentProvider;
+          } else {
+            App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+          }
+          web3 = new Web3(App.web3Provider);
+          return await App.initContract();
+        },
+
+        initContract: function() {
+          $.getJSON('../build/contracts/Product.json', function(data) {
+            var ProductArtifact = data;
+            App.contracts.Product = TruffleContract(ProductArtifact);
+            App.contracts.Product.setProvider(App.web3Provider);
+            
+            // Get account
+            web3.eth.getCoinbase(function(err, account) {
+              if (err === null) {
+                App.account = account;
+                console.log("Admin Account:", App.account);
+              }
+            });
+          });
+        },
+
+        viewManufacturer: async function() {
+          const address = $('#manufacturerAddress').val().trim();
+          if (!address) return alert("Please enter an address");
+
+          try {
+            const instance = await App.contracts.Product.deployed();
+            const isVerified = await instance.isVerifiedManufacturer(address);
+            const mfgId = await instance.getManufacturerId(address);
+            
+            const detailsDiv = $('#manufacturerDetails');
+            detailsDiv.show();
+            
+            let statusHtml = isVerified 
+              ? '<span style="color: green;">✅ Verified & Active</span>' 
+              : '<span style="color: orange;">⏳ Pending Verification</span>';
+
+            detailsDiv.html(`
+              <h3>📋 Manufacturer Details</h3>
+              <p><strong>Wallet Address:</strong> ${address}</p>
+              <p><strong>Manufacturer ID:</strong> ${web3.toAscii(mfgId) || 'Not Registered'}</p>
+              <p><strong>Registration Status:</strong> ${statusHtml}</p>
+              
+              <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #ddd;">
+                <h4>Admin Actions:</h4>
+                ${!isVerified ? `
+                  <button class="btn btn-success" onclick="App.verifyManufacturer('${address}')">
+                    ✅ Verify Manufacturer
+                  </button>
+                ` : '<p>Manufacturer already verified.</p>'}
+              </div>
+            `);
+          } catch (error) {
+            console.error(error);
+            alert("Error fetching manufacturer details. Is the contract deployed?");
+          }
+        },
+
+        verifyManufacturer: async function(address) {
+          try {
+            const instance = await App.contracts.Product.deployed();
+            
+            // Show pending message
+            alert("Please confirm the transaction in MetaMask...");
+            
+            const result = await instance.verifyManufacturer(address, { from: App.account });
+            
+            console.log("Transaction Result:", result);
+            alert("✅ Manufacturer verified successfully! Transaction: " + result.tx);
+            App.viewManufacturer(); // Refresh view
+          } catch (error) {
+            console.error(error);
+            alert("Transaction failed: " + error.message);
+          }
+        }
+      };
+
+      $(function() {
+        $(window).load(function() {
+          App.init();
+        });
+
+        $('#viewManufacturerBtn').click(function() {
+          App.viewManufacturer();
+        });
+      });
+
+      function pasteDemoAddress() {
+        $('#manufacturerAddress').val("0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2");
+      }
+    </script>
+  </body>
+</html>ript> -->
+  </body>
+</html>

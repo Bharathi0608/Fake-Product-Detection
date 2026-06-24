@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Fake Product Identification</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/style.css">
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: 'Roboto', sans-serif;
+      }
+      .header-section {
+        background: linear-gradient(135deg, #4CAF50 0%, #4CAF50 100%);
+        color: white;
+        padding: 30px 0;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      .header-section h1 {
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .header-section p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+      .content-section {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 25px;
+        margin-bottom: 30px;
+      }
+      .nav-tabs {
+        border-bottom: 2px solid #e9ecef;
+        margin-bottom: 20px;
+      }
+      .nav-tabs .nav-link {
+        border: none;
+        color: #495057;
+        font-weight: 500;
+        padding: 12px 25px;
+      }
+      .nav-tabs .nav-link.active {
+        color: #1a237e;
+        border-bottom: 3px solid #1a237e;
+        background-color: transparent;
+      }
+      .form-control {
+        border-radius: 4px;
+        padding: 12px 15px;
+        border: 1px solid #ced4da;
+      }
+      .btn-warning {
+        background-color: #ff9800;
+        border-color: #ff9800;
+        color: white;
+        font-weight: 500;
+        padding: 12px 30px;
+        border-radius: 4px;
+      }
+      .btn-warning:hover {
+        background-color: #f57c00;
+        border-color: #f57c00;
+      }
+      .matrix {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .matrix td {
+        padding: 10px;
+      }
+      .matrix label {
+        font-weight: 500;
+        margin-bottom: 5px;
+        display: block;
+      }
+      .qr-scanner-container {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      #qr-reader {
+        margin: 0 auto;
+      }
+      #qr-reader-results {
+        margin-top: 10px;
+        font-weight: 500;
+        color: #1a237e;
+      }
+      
+      /* NEW: Bigger verification result styles */
+      .verification-result {
+        text-align: center;
+        padding: 40px 20px;
+        margin: 20px 0;
+        border-radius: 12px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .verification-genuine {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        border: 3px solid #28a745;
+        color: #155724;
+      }
+      
+      .verification-fake {
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        border: 3px solid #dc3545;
+        color: #721c24;
+      }
+      
+      .verification-pending {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+        border: 3px solid #ffc107;
+        color: #856404;
+      }
+      
+      .verification-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+      }
+      
+      .verification-title {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+      
+      .verification-message {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-top: 10px;
+      }
+      
+      .verification-details {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+        width: 80%;
+      }
+      
+      .wallet-info {
+        text-align: center;
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+      }
+    </style>
+	</head>
+	<body>
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="container">
+        <h1>BLOCKCHAIN POWERED FAKE PRODUCT DETECTION</h1>
+        <p>Verify Products - Authenticate products through blockchain technology</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Navigation Tabs -->
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link active" href="verifyProducts.html">Product Verification</a>
+        </li>
+		<li class="nav-item">
+          <a class="nav-link" href="consumerPurchaseHistory.html"> Consumer Purchase History</a>
+        </li>
+        
+      </ul>
+
+      <!-- QR Scanner Section -->
+      <div class="content-section">
+        <h2>Scan Product QR Code</h2>
+        <p>Use the scanner below to read the product QR code</p>
+        
+        <div class="qr-scanner-container">
+          <div id="qr-reader" style="width:300px"></div>
+          <div id="qr-reader-results"></div>
+        </div>
+      </div>
+
+      <!-- Verify Product Form Section -->
+      <div class="content-section">
+        <h2>Verify Product Authenticity</h2>
+        <p>Enter product details to check authenticity status</p>
+        
+        <div class="matrix">
+          <table width="100%">
+            <tr width="100%">
+              <td width="15%" align="center">
+                <label for="productSN">Product SN:</label>
+              </td>
+              <td width="30%">
+                <input disabled class="form-control" id="productSN" name="productSN" type="text" placeholder="Enter Product SN" />
+              </td>
+              <td width="15%" align="center">
+                <label for="consumerCode">Consumer Code</label>
+              </td>
+              <td width="30%">
+                <input class="form-control" id="consumerCode" name="consumerCode" type="text" placeholder="Enter Consumer Code" />
+              </td>
+            </tr>
+          </table>
+        </div>
+        
+        <div class="clear">&nbsp;</div>
+        <div align="center">
+          <button type="submit" class="btn btn-warning btn-register" id="register">Get Product Status</button>
+        </div>
+      </div>
+
+      <!-- Verification Result Section -->
+      <div class="content-section">
+        <h2>Is the product sold to consumer is fake or not?</h2>
+        
+        <!-- NEW: Big verification result display -->
+        <div id="verificationResult" class="verification-result verification-pending" style="display: none;">
+          <div class="verification-icon" id="verificationIcon">🔍</div>
+          <div class="verification-title" id="verificationTitle">Verifying Product</div>
+          <div class="verification-message" id="verificationMessage">Please scan a product and check verification</div>
+          <div class="verification-details" id="verificationDetails" style="display: none;">
+            <!-- Details will be populated here -->
+          </div>
+        </div>
+        
+        <!-- Original table (kept for backward compatibility) -->
+        <table class="verification-table" style="display: none;">
+          <thead>
+            <tr>
+              <th>Product Verification Result</th>
+            </tr>
+          </thead>
+          <tbody id="logdata">
+            <!-- Verification results will appear here -->
+          </tbody>
+        </table>
+        
+        <!-- <div class="wallet-info">
+          <p>Your address is <b id="add"></b></p>
+        </div> -->
+
+        <div id="resultBox"></div>
+
+<div class="mt-3">
+    <p>Your address is <span id="add"></span></p>
+</div>
+      </div>
+    </div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/popper.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/web3.min.js"></script>
+	<script src="js/truffle-contract.js"></script>
+	<script src="js/verifyProduct.js"></script>
+	<script src="https://unpkg.com/html5-qrcode"></script>
+	<script>
+	var decodedText = "Enter Product SN";
+    
+    function docReady(fn) {
+        // see if DOM is already available
+        if (document.readyState === "complete"
+            || document.readyState === "interactive") {
+            // call on next available tick
+            setTimeout(fn, 1);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+    }
+
+    docReady(function () {
+        var resultContainer = document.getElementById('qr-reader-results');
+        var lastResult, countResults = 0;
+        function onScanSuccess(decodedText, decodedResult) {
+            if (decodedText !== lastResult) {
+                ++countResults;
+                lastResult = decodedText;
+                // Handle on success condition with the decoded message.
+                var audio = new Audio('beep.wav');
+                audio.play();
+                // console.log(`Scan result ${decodedText}`, decodedResult);
+                document.getElementById('qr-reader-results').innerHTML=decodedText;
+				document.getElementById("productSN").value = decodedText;
+				// Reset verification display
+				resetVerificationDisplay();
+                //App.init(decodedText);
+            }
+        }
+
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+    });
+    
+    // NEW: Function to update verification display
+    function updateVerificationDisplay(isGenuine, details) {
+        const resultDiv = document.getElementById('verificationResult');
+        const iconDiv = document.getElementById('verificationIcon');
+        const titleDiv = document.getElementById('verificationTitle');
+        const messageDiv = document.getElementById('verificationMessage');
+        const detailsDiv = document.getElementById('verificationDetails');
+        
+        // Show the result div
+        resultDiv.style.display = 'flex';
+        
+        if (isGenuine) {
+            // Genuine product
+            resultDiv.className = 'verification-result verification-genuine';
+            iconDiv.innerHTML = '✅';
+            titleDiv.textContent = 'GENUINE PRODUCT';
+            messageDiv.textContent = 'This product is authentic and verified!';
+            
+            // Add details if available
+            if (details) {
+                detailsDiv.style.display = 'block';
+                detailsDiv.innerHTML = `
+                    <p><strong>Product SN:</strong> ${details.productSN || 'N/A'}</p>
+                   
+                    <p><strong>Status:</strong> Verified ✅</p>
+                    <p><strong>Verification Time:</strong> ${new Date().toLocaleString()}</p>
+                `;
+            }
+        } else {
+            // Fake product
+            resultDiv.className = 'verification-result verification-fake';
+            iconDiv.innerHTML = '❌';
+            titleDiv.textContent = 'FAKE PRODUCT';
+            messageDiv.textContent = 'WARNING: This product is Fraud!';
+            
+            // Add details if available
+            if (details) {
+                detailsDiv.style.display = 'block';
+                detailsDiv.innerHTML = `
+                    <p><strong>Product SN:</strong> ${details.productSN || 'N/A'}</p>
+                    <p><strong>Status:</strong> Fraud❌</p>
+                    <p><strong>Warning:</strong> This product is not authentic</p>
+                    <p><strong>Detection Time:</strong> ${new Date().toLocaleString()}</p>
+                `;
+            }
+        }
+    }
+    
+    // NEW: Function to reset verification display
+    function resetVerificationDisplay() {
+        const resultDiv = document.getElementById('verificationResult');
+        const iconDiv = document.getElementById('verificationIcon');
+        const titleDiv = document.getElementById('verificationTitle');
+        const messageDiv = document.getElementById('verificationMessage');
+        const detailsDiv = document.getElementById('verificationDetails');
+        
+        resultDiv.className = 'verification-result verification-pending';
+        resultDiv.style.display = 'flex';
+        iconDiv.innerHTML = '🔍';
+        titleDiv.textContent = 'READY TO VERIFY';
+        messageDiv.textContent = 'Product scanned. Please click "Get Product Status" to verify.';
+        detailsDiv.style.display = 'none';
+    }
+    
+    // NEW: Function to show pending verification
+    function showPendingVerification() {
+        const resultDiv = document.getElementById('verificationResult');
+        const iconDiv = document.getElementById('verificationIcon');
+        const titleDiv = document.getElementById('verificationTitle');
+        const messageDiv = document.getElementById('verificationMessage');
+        const detailsDiv = document.getElementById('verificationDetails');
+        
+        resultDiv.className = 'verification-result verification-pending';
+        resultDiv.style.display = 'flex';
+        iconDiv.innerHTML = '⏳';
+        titleDiv.textContent = 'VERIFYING...';
+        messageDiv.textContent = 'Checking product authenticity on blockchain...';
+        detailsDiv.style.display = 'none';
+    }
+    
+    // Initialize verification display on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        resetVerificationDisplay();
+    });
+    
+    // NEW: Override the original verification to update our display
+    // We'll intercept the original verification process
+    const originalGetData = App.getData;
+    
+    App.getData = function(event) {
+        event.preventDefault();
+        
+        // Show pending state
+        showPendingVerification();
+        
+        // Call original function
+        originalGetData.call(this, event);
+        
+        // Since the original function is async, we need to check the result
+        // We'll set up an interval to check when verification is complete
+        const checkInterval = setInterval(function() {
+            const logdata = document.getElementById('logdata');
+            if (logdata && logdata.innerHTML) {
+                clearInterval(checkInterval);
+                
+                // Parse the result from the original table
+                const resultText = logdata.innerHTML.toLowerCase();
+                let isGenuine = false;
+                let details = {};
+                
+                if (resultText.includes('genuine') || resultText.includes('authentic')) {
+                    isGenuine = true;
+                } else if (resultText.includes('fake') || resultText.includes('counterfeit')) {
+                    isGenuine = false;
+                }
+                
+                // Extract product SN if available
+                const productSN = document.getElementById('productSN').value;
+                if (productSN) {
+                    details.productSN = productSN;
+                }
+                
+                // Update the display
+                updateVerificationDisplay(isGenuine, details);
+            }
+        }, 500);
+    };
+    
+    // Also hook into the button click
+    document.addEventListener('DOMContentLoaded', function() {
+        const verifyButton = document.getElementById('register');
+        if (verifyButton) {
+            // Store original onclick
+            const originalOnClick = verifyButton.onclick;
+            
+            verifyButton.addEventListener('click', function(e) {
+                // Check if product SN is entered
+                const productSN = document.getElementById('productSN').value;
+                const consumerCode = document.getElementById('consumerCode').value;
+                
+                if (!productSN) {
+                    alert('Please scan a product QR code first!');
+                    e.preventDefault();
+                    return;
+                }
+                
+                if (!consumerCode) {
+                    alert('Please enter your consumer code!');
+                    e.preventDefault();
+                    return;
+                }
+                
+                // Show pending verification
+                showPendingVerification();
+                
+                // Call original function if it exists
+                if (originalOnClick) {
+                    originalOnClick.call(this, e);
+                }
+            });
+        }
+    });
+  </script>
+  </body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Fake Product Identification</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/modern-dashboard.css">
+</head>
+
+<body class="dashboard-body manufacturer-page">
+
+<div class="dashboard-wrapper">
+
+<header class="main-header">
+    <h1>Fake Product Detection</h1>
+    <p class="blockchain-tagline">Blockchain Powered Fake Product Detection</p>
+
+    <div class="wallet-panel">
+        <button id="connectWallet">Connect Wallet</button>
+
+        <div id="walletInfo" class="wallet-info" style="display:none;">
+            <span class="wallet-address-label">Connected:</span>
+            <span id="walletAddress" class="wallet-address-badge"></span>
+            <button id="logoutWallet">Logout</button>
+        </div>
+    </div>
+</header>
+
+<section class="content-panel">
+    <div class="content-copy">
+        <span class="eyebrow">Blockchain Powered Fake Product Detection</span>
+        <h3>Manufacturer</h3>
+        <p>Go to navigation bar to perform operations.</p>
+        <p class="role-page-cta">
+            Keep inventory authentic by onboarding trusted sellers and minting verified products.
+        </p>
+    </div>
+
+    <nav class="role-nav">
+        <a href="index.html" class="nav-chip">Home</a>
+        <a href="addProduct.html" class="nav-chip">Add Product</a>
+        <a href="addSeller.html" class="nav-chip">Add Seller</a>
+        <a href="sellProductManufacturer.html" class="nav-chip">Sell Product To Seller</a>
+        <a href="querySeller.html" class="nav-chip">Query Seller</a>
+    </nav>
+</section>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const connectBtn = document.getElementById('connectWallet');
+    const logoutBtn = document.getElementById('logoutWallet');
+    const walletInfo = document.getElementById('walletInfo');
+    const walletAddressSpan = document.getElementById('walletAddress');
+
+    let isConnecting = false; // Prevent duplicate requests
+
+    connectBtn.addEventListener('click', async function () {
+
+        if (isConnecting) return; // prevent double click
+        isConnecting = true;
+
+        if (!window.ethereum) {
+            alert("MetaMask not installed!");
+            isConnecting = false;
+            return;
+        }
+
+        try {
+            const accounts = await window.ethereum.request({
+                method: "eth_requestAccounts"
+            });
+
+            const address = accounts[0];
+            displayWallet(address);
+            localStorage.setItem('walletAddress', address);
+
+        } catch (error) {
+            console.error("Wallet connection failed:", error);
+            alert("Wallet connection failed.");
+        }
+
+        isConnecting = false;
+    });
+
+    logoutBtn.addEventListener('click', function () {
+        localStorage.removeItem('walletAddress');
+        walletInfo.style.display = "none";
+        connectBtn.style.display = "inline-block";
+    });
+
+    function displayWallet(address) {
+        const shortAddr =
+            address.substring(0, 6) + "..." +
+            address.substring(address.length - 4);
+
+        walletAddressSpan.textContent = shortAddr;
+        walletAddressSpan.title = address;
+
+        walletInfo.style.display = "flex";
+        connectBtn.style.display = "none";
+    }
+
+});
+</script>
+
+</body>
+</html>

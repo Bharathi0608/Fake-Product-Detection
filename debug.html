@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Signup</title>
+</head>
+<body>
+    <h2>Debug Test</h2>
+    <button onclick="test1()">Test 1: Simple Fetch</button>
+    <button onclick="test2()">Test 2: Check Server</button>
+    <button onclick="test3()">Test 3: Check CORS</button>
+    
+    <div id="result" style="background:#f0f0f0; padding:10px; margin:10px;"></div>
+    
+    <script>
+        function log(msg) {
+            console.log(msg);
+            document.getElementById('result').innerHTML += msg + '<br>';
+        }
+        
+        async function test1() {
+            log('=== Test 1: Simple Fetch ===');
+            try {
+                const response = await fetch('http://localhost:5000/');
+                const data = await response.json();
+                log('✓ Server responded: ' + JSON.stringify(data));
+            } catch (e) {
+                log('✗ Error: ' + e.message);
+            }
+        }
+        
+        async function test2() {
+            log('=== Test 2: Signup API ===');
+            try {
+                const response = await fetch('http://localhost:5000/api/users/register', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        name: "Debug Test",
+                        email: "debug@test.com",
+                        password: "123456",
+                        role: "consumer",
+                        roleData: {}
+                    })
+                });
+                const data = await response.json();
+                log('✓ Signup worked: ' + JSON.stringify(data));
+            } catch (e) {
+                log('✗ Error: ' + e.message);
+            }
+        }
+        
+        async function test3() {
+            log('=== Test 3: Check CORS ===');
+            try {
+                // Try different URL formats
+                const urls = [
+                    'http://localhost:5000/api/users/register',
+                    '/api/users/register',
+                    '//localhost:5000/api/users/register'
+                ];
+                
+                for (let url of urls) {
+                    log('Trying: ' + url);
+                    try {
+                        const response = await fetch(url, {
+                            method: 'OPTIONS',
+                            headers: {'Content-Type': 'application/json'}
+                        });
+                        log('✓ ' + url + ' - Status: ' + response.status);
+                    } catch (e) {
+                        log('✗ ' + url + ' - Error: ' + e.message);
+                    }
+                }
+            } catch (e) {
+                log('Error: ' + e.message);
+            }
+        }
+    </script>
+</body>
+</html>

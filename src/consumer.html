@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Fake Product Identification</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/modern-dashboard.css">
+	</head>
+	<body class="dashboard-body consumer-page">
+		<div class="background-pattern"></div>
+		<div class="dashboard-wrapper">
+			<header class="main-header">
+				<h1>Fake Product Detection</h1>
+				<p class="blockchain-tagline">Blockchain Powered Fake Product Detection</p>
+				<p class="subtext">Secure • Transparent • Reliable</p>
+				<div class="wallet-panel">
+					<button id="connectWallet">Connect Wallet</button>
+					<div id="walletInfo" class="wallet-info">
+						<span class="wallet-address-label">Connected:</span>
+						<span id="walletAddress" class="wallet-address-badge"></span>
+						<button id="logoutWallet">Logout</button>
+					</div>
+				</div>
+			</header>
+
+			<section class="role-cards">
+				<!--<a href="manufacturer.html" class="role-card">
+					<div class="checkbox-set">
+						<span></span><span></span><span></span>
+					</div>
+					<h2>Manufacturer</h2>
+					<p class="card-tagline">Secure • Transparent • Reliable</p>
+					<p class="card-note">Trust the data written by verified manufacturers.</p>
+				</a>
+				<a href="seller.html" class="role-card">
+					<div class="checkbox-set">
+						<span></span><span></span><span></span>
+					</div>
+					<h2>Seller</h2>
+					<p class="card-tagline">Secure • Transparent • Reliable</p>
+					<p class="card-note">See the sellers behind every trusted product.</p>
+				</a>
+				<a href="consumer.html" class="role-card">
+					<div class="checkbox-set">
+						<span></span><span></span><span></span>
+					</div>
+					<h2>Consumer</h2>
+					<p class="card-tagline">Secure • Transparent • Reliable</p>
+					<p class="card-note">Verify QR codes and review your purchase history.</p>
+				</a>-->
+			</section>
+
+			<!--<nav class="role-nav">
+				<a href="index.html" class="nav-chip">Home</a>
+				<a href="verifyProducts.html" class="nav-chip">Product Verification</a>
+				<a href="consumerPurchaseHistory.html" class="nav-chip">Consumer Purchase History</a>
+			</nav>-->
+
+			<section class="content-panel">
+				<div class="content-copy">
+					<span class="eyebrow">Blockchain Powered Fake Product Detection</span>
+					<h3>Consumer</h3>
+					<p>Go to navigation bar to perform operations.</p>
+					<p class="role-page-cta">Scan, verify, and explore your transactions with absolute confidence.</p>
+				</div>
+				<div class="checkbox-grid" aria-hidden="true">
+					<span></span><span></span><span></span><span></span>
+					<span></span><span></span><span></span><span></span>
+					<span></span><span></span><span></span><span></span>
+				</div>
+				<nav class="role-nav">
+				<a href="index.html" class="nav-chip">Home</a>
+				<a href="verifyProducts.html" class="nav-chip">Product Verification</a>
+				<a href="consumerPurchaseHistory.html" class="nav-chip">Consumer Purchase History</a>
+			</nav>
+				
+			</section>
+		</div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="js/popper.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/web3.min.js"></script>
+  <script src="js/truffle-contract.js"></script>
+  <script src="js/sellerDataApp.js"></script>
+  <script>
+		// Wallet Connection Logic
+		document.addEventListener('DOMContentLoaded', () => {
+			const connectWalletBtn = document.getElementById('connectWallet');
+			const logoutWalletBtn = document.getElementById('logoutWallet');
+			const walletAddressSpan = document.getElementById('walletAddress');
+			const walletInfoDiv = document.getElementById('walletInfo');
+
+			// Check if wallet is already connected
+			checkConnectedWallet();
+
+			// Connect Wallet Button
+			connectWalletBtn.addEventListener('click', connectWallet);
+
+			// Logout Button
+			logoutWalletBtn.addEventListener('click', logoutWallet);
+
+			// Check if wallet is connected on page load
+			function checkConnectedWallet() {
+				const savedAddress = localStorage.getItem('walletAddress');
+				if (savedAddress) {
+					displayWalletInfo(savedAddress);
+				}
+			}
+
+			// Connect Wallet Function
+			async function connectWallet() {
+				if (typeof window.ethereum === 'undefined') {
+					alert('Please install MetaMask or another Ethereum wallet!');
+					return;
+				}
+
+				try {
+					// Request account access
+					const accounts = await window.ethereum.request({
+						method: 'eth_requestAccounts'
+					});
+
+					const address = accounts[0];
+					displayWalletInfo(address);
+					localStorage.setItem('walletAddress', address);
+
+					// Listen for account changes
+					window.ethereum.on('accountsChanged', (accounts) => {
+						if (accounts.length === 0) {
+							logoutWallet();
+						} else {
+							displayWalletInfo(accounts[0]);
+							localStorage.setItem('walletAddress', accounts[0]);
+						}
+					});
+
+					// Listen for chain changes
+					window.ethereum.on('chainChanged', () => {
+						window.location.reload();
+					});
+
+				} catch (error) {
+					console.error('Error connecting wallet:', error);
+					alert('Error connecting wallet. Please try again.');
+				}
+			}
+
+			// Display Wallet Info
+			function displayWalletInfo(address) {
+				const shortAddress = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+				walletAddressSpan.textContent = shortAddress;
+				walletAddressSpan.title = address; // Show full address on hover
+				walletInfoDiv.style.display = 'flex';
+				connectWalletBtn.style.display = 'none';
+			}
+
+			// Logout Wallet
+			function logoutWallet() {
+				localStorage.removeItem('walletAddress');
+				walletInfoDiv.style.display = 'none';
+				connectWalletBtn.style.display = 'inline-flex';
+			}
+		});
+	</script>
+  </body>
+</html>

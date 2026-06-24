@@ -1,0 +1,266 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Blockchain Status - FraudBlock</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+      .status-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        border: 1px solid #eee;
+      }
+      .status-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #f8f9fa;
+        padding-bottom: 10px;
+      }
+      .badge-live {
+        background: #e8f5e9;
+        color: #2e7d32;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .badge-live::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: #4caf50;
+        border-radius: 50%;
+        display: inline-block;
+        animation: pulse 1.5s infinite;
+      }
+      @keyframes pulse {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+        70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+      }
+      .address-tag {
+        font-family: monospace;
+        background: #f1f3f5;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 14px;
+        color: #495057;
+      }
+      .tx-row {
+        padding: 12px 0;
+        border-bottom: 1px solid #f1f3f5;
+      }
+      .tx-row:last-child { border-bottom: none; }
+      .tx-hash { color: #007bff; font-weight: 500; }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="container py-5">
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <h1 class="font-weight-bold">Blockchain Dashboard</h1>
+          <p class="text-muted">Live network status and contract information</p>
+        </div>
+        <div class="col-md-6 text-right">
+          <a href="index.html" class="btn btn-outline-secondary">← Back to Home</a>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Network Info -->
+        <div class="col-md-4">
+          <div class="status-card">
+            <div class="status-header">
+              <h5 class="m-0">Network Info</h5>
+              <div class="badge-live" id="networkStatus">Checking...</div>
+            </div>
+            <p><strong>Network ID:</strong> <span id="networkId">-</span></p>
+            <p><strong>Current Block:</strong> <span id="currentBlock">-</span></p>
+            <p><strong>Your Account:</strong> <br><span class="address-tag" id="userAccount">Loading...</span></p>
+          </div>
+        </div>
+
+        <!-- Contract Info -->
+        <div class="col-md-8">
+          <div class="status-card">
+            <div class="status-header">
+              <h5 class="m-0">Deployed Contracts</h5>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-borderless">
+                <thead>
+                  <tr>
+                    <th>Contract Name</th>
+                    <th>Deplayed Address</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="contractsBody">
+                  <tr>
+                    <td>Product</td>
+                    <td><span class="address-tag" id="productAddr">Loading...</span></td>
+                    <td><span class="text-success">● Active</span></td>
+                  </tr>
+                  <tr>
+                    <td>AuthSystem</td>
+                    <td><span class="address-tag" id="authAddr">Loading...</span></td>
+                    <td><span class="text-success">● Active</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Recent Transactions -->
+        <div class="col-md-12">
+          <div class="status-card">
+            <div class="status-header">
+              <h5 class="m-0">Recent Blockchain Transactions</h5>
+              <button class="btn btn-sm btn-primary" onclick="App.testTransaction()">Test Transaction (MetaMask Check)</button>
+            </div>
+            <div id="transactionsList">
+              <p class="text-center py-4 text-muted">Listening for new transactions...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/blockchain-ui.js"></script>
+
+    <script>
+      const App = {
+        web3Provider: null,
+        contracts: {},
+        account: null,
+
+        init: async function() {
+          if (window.ethereum) {
+            App.web3Provider = window.ethereum;
+            window.web3 = new Web3(window.ethereum);
+            try {
+              const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+              App.account = accounts[0];
+              $('#userAccount').text(App.account);
+              $('#networkStatus').text('LIVE ON GANACHE');
+            } catch (err) {
+              $('#networkStatus').text('ACCESS DENIED').removeClass('badge-live').addClass('badge-danger');
+            }
+          } else {
+            alert("MetaMask not found!");
+          }
+
+          App.updateNetworkInfo();
+          await App.loadContractInfo();
+          App.listenForEvents();
+        },
+
+        updateNetworkInfo: async function() {
+          web3.eth.getBlockNumber((err, block) => {
+            if (!err) $('#currentBlock').text(block);
+          });
+          web3.version.getNetwork((err, netId) => {
+            if (!err) $('#networkId').text(netId);
+          });
+        },
+
+        loadContractInfo: async function() {
+          // Load Product
+          $.getJSON('../build/contracts/Product.json', function(data) {
+            const netId = web3.version.network;
+            if (data.networks[netId]) {
+              $('#productAddr').text(data.networks[netId].address);
+              App.contracts.Product = TruffleContract(data);
+              App.contracts.Product.setProvider(App.web3Provider);
+            }
+          });
+
+          // Load AuthSystem
+          $.getJSON('../build/contracts/AuthSystem.json', function(data) {
+             const netId = web3.version.network;
+            if (data.networks[netId]) {
+              $('#authAddr').text(data.networks[netId].address);
+              App.contracts.Auth = TruffleContract(data);
+              App.contracts.Auth.setProvider(App.web3Provider);
+            }
+          });
+        },
+
+        testTransaction: async function() {
+          const toastId = BlockchainUI.showToast('Initiating Transaction', 'Please confirm in MetaMask...', 'pending');
+          
+          try {
+            const instance = await App.contracts.Product.deployed();
+            // Call a simple non-state-changing method or a low-gas one
+            // We'll use toggleDemoMode(true) if admin, or just we can do a simple transfer of 0 ETH
+            
+            web3.eth.sendTransaction({
+              from: App.account,
+              to: App.account, // Send to self
+              value: 0
+            }, (err, hash) => {
+              if (err) {
+                BlockchainUI.updateToast(toastId, 'Transaction Cancelled', err.message, 'error');
+              } else {
+                BlockchainUI.updateToast(toastId, 'Transaction Sent', 'Pending confirmation...', 'pending', hash);
+                App.addTxRow(hash, 'Self Transfer (Test)');
+                
+                // Wait for confirmation
+                const checkInterval = setInterval(() => {
+                  web3.eth.getTransactionReceipt(hash, (err, receipt) => {
+                    if (receipt) {
+                      clearInterval(checkInterval);
+                      BlockchainUI.updateToast(toastId, 'Transaction Confirmed!', 'Block: ' + receipt.blockNumber, 'success', hash);
+                      App.updateNetworkInfo();
+                    }
+                  });
+                }, 2000);
+              }
+            });
+          } catch (error) {
+            BlockchainUI.updateToast(toastId, 'Error', error.message, 'error');
+          }
+        },
+
+        addTxRow: function(hash, type) {
+          if ($('#transactionsList p').length) $('#transactionsList').empty();
+          
+          const row = `
+            <div class="tx-row d-flex justify-content-between">
+              <div>
+                <span class="tx-hash">${hash.substring(0, 20)}...</span>
+                <span class="text-muted ml-2">(${type})</span>
+              </div>
+              <div class="text-success small">Pending...</div>
+            </div>
+          `;
+          $('#transactionsList').prepend(row);
+        },
+
+        listenForEvents: function() {
+          // In a real app, we'd listen to Contract events here
+        }
+      };
+
+      $(window).on('load', () => App.init());
+    </script>
+  </body>
+</html>

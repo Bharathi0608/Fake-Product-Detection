@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Fake Product Identification</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/modern-dashboard.css">
+	<style>
+		/* Reset and base styles */
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		
+		body {
+			font-family: 'Inter', sans-serif;
+			background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+		}
+		
+		/* Header styles */
+		.main-header {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 40px 20px 30px;
+			text-align: center;
+		}
+		
+		.top-actions {
+			width: 100%;
+			max-width: 1200px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 40px;
+			padding: 0 20px;
+		}
+		
+		.auth-actions {
+			display: flex;
+			gap: 12px;
+			flex-wrap: wrap;
+		}
+		
+		.auth-link {
+			padding: 10px 22px;
+			border-radius: 8px;
+			text-decoration: none;
+			font-weight: 600;
+			font-size: 14px;
+			transition: all 0.3s ease;
+			border: 2px solid transparent;
+			text-align: center;
+			white-space: nowrap;
+		}
+		
+		.auth-link:not(.primary) {
+			background-color: transparent;
+			color: #4CAF50;
+			border-color: #4CAF50;
+		}
+		
+		.auth-link.primary {
+			background-color: #4CAF50;
+			color: white;
+			border-color: #4CAF50;
+		}
+		
+		.auth-link.demo {
+			background-color: #FF9800;
+			color: white;
+			border-color: #FF9800;
+		}
+		
+		.auth-link:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+		}
+		
+		.auth-link:not(.primary):not(.demo):hover {
+			background-color: rgba(76, 175, 80, 0.1);
+		}
+		
+		.auth-link.primary:hover {
+			background-color: #45a049;
+			border-color: #45a049;
+		}
+		
+		.auth-link.demo:hover {
+			background-color: #F57C00;
+			border-color: #F57C00;
+		}
+		
+		.main-header h1 {
+			margin-bottom: 15px;
+			font-size: 2.8rem;
+			color: #2c3e50;
+			font-weight: 700;
+			line-height: 1.2;
+			max-width: 800px;
+		}
+		
+		.main-header h2 {
+			font-size: 1.3rem;
+			color: #666;
+			font-weight: 400;
+			margin-bottom: 50px;
+			max-width: 600px;
+		}
+		
+		/* Main content container */
+		.main-content {
+			flex: 1;
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 0 20px 60px;
+			width: 100%;
+		}
+		
+		/* Role cards styling - UPDATED FOR SINGLE LINE */
+		.role-cards-container {
+			margin: 40px 0 80px;
+		}
+		
+		.role-cards-title {
+			text-align: center;
+			font-size: 2rem;
+			color: #2c3e50;
+			margin-bottom: 40px;
+			font-weight: 600;
+		}
+		
+		.role-cards--compact {
+			display: flex;
+			justify-content: center;
+			gap: 30px;
+			flex-wrap: nowrap;
+		}
+		
+		.role-card--compact {
+			flex: 1;
+			min-width: 300px;
+			max-width: 380px;
+			background: white;
+			border-radius: 16px;
+			padding: 35px 30px;
+			box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+			text-decoration: none;
+			color: inherit;
+			transition: all 0.4s ease;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			border: 1px solid #eaeaea;
+		}
+		
+		.role-card--compact:hover {
+			transform: translateY(-8px);
+			box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+			border-color: #4CAF50;
+		}
+		
+		.role-icon {
+			font-size: 3.5rem;
+			margin-bottom: 20px;
+			display: block;
+		}
+		
+		.role-card--compact h2 {
+			margin: 15px 0;
+			color: #2c3e50;
+			font-size: 1.8rem;
+			font-weight: 600;
+		}
+		
+		.card-tagline {
+			font-weight: 600;
+			color: #4CAF50;
+			margin: 10px 0;
+			font-size: 1rem;
+			letter-spacing: 0.5px;
+		}
+		
+		.card-note {
+			color: #666;
+			font-size: 1rem;
+			line-height: 1.6;
+			margin-top: 15px;
+		}
+		
+		/* How It Works section - UPDATED FOR BETTER DESIGN */
+		.how-it-works {
+			background: white;
+			border-radius: 20px;
+			padding: 60px 40px;
+			margin: 60px 0;
+			box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+			border: 1px solid #eaeaea;
+		}
+		
+		.how-it-works-title {
+			text-align: center;
+			font-size: 2.5rem;
+			color: #2c3e50;
+			margin-bottom: 60px;
+			font-weight: 700;
+			position: relative;
+			padding-bottom: 20px;
+		}
+		
+		.how-it-works-title:after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 80px;
+			height: 4px;
+			background: linear-gradient(90deg, #4CAF50, #2196F3);
+			border-radius: 2px;
+		}
+		
+		.workflow-steps {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 40px;
+			position: relative;
+		}
+		
+		.workflow-steps:before {
+			content: '';
+			position: absolute;
+			top: 50px;
+			left: 12.5%;
+			right: 12.5%;
+			height: 3px;
+			background: linear-gradient(90deg, #4CAF50, #2196F3);
+			z-index: 1;
+		}
+		
+		.step {
+			text-align: center;
+			padding: 30px 20px;
+			position: relative;
+			z-index: 2;
+			background: white;
+			border-radius: 15px;
+			transition: all 0.3s ease;
+			border: 1px solid transparent;
+		}
+		
+		.step:hover {
+			border-color: #e0e0e0;
+			box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+			transform: translateY(-5px);
+		}
+		
+		.step-number {
+			width: 60px;
+			height: 60px;
+			background: linear-gradient(135deg,#4CAF50,#2196F3);
+			color: white;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 1.8rem;
+			font-weight: bold;
+			margin: 0 auto 25px;
+			box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+			position: relative;
+			z-index: 3;
+		}
+		
+		.step-icon {
+			font-size: 2.5rem;
+			margin-bottom: 20px;
+			
+		}
+		
+		.step h3 {
+			color: #2c3e50;
+			margin-bottom: 15px;
+			font-size: 1.4rem;
+			font-weight: 600;
+			min-height: 60px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		
+		.step p {
+			color: #666;
+			line-height: 1.7;
+			font-size: 1rem;
+			padding: 0 10px;
+		}
+		
+		.step-highlight {
+			background: linear-gradient(135deg,white);
+			
+		}
+		
+		/* Footer styles */
+		.main-footer {
+			background: #2c3e50;
+			color: white;
+			padding: 40px 20px;
+			margin-top: auto;
+		}
+		
+		.footer-content {
+			max-width: 1200px;
+			margin: 0 auto;
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			flex-wrap: wrap;
+			gap: 40px;
+		}
+		
+		.footer-section {
+			flex: 1;
+			min-width: 250px;
+		}
+		
+		.footer-section h3 {
+			font-size: 1.2rem;
+			margin-bottom: 20px;
+			color: #4CAF50;
+		}
+		
+		.footer-links {
+			list-style: none;
+		}
+		
+		.footer-links li {
+			margin-bottom: 10px;
+		}
+		
+		.footer-links a {
+			color: #ddd;
+			text-decoration: none;
+			transition: color 0.3s;
+		}
+		
+		.footer-links a:hover {
+			color: #4CAF50;
+		}
+		
+		.copyright {
+			text-align: center;
+			margin-top: 40px;
+			padding-top: 20px;
+			border-top: 1px solid #444;
+			color: #aaa;
+			font-size: 0.9rem;
+		}
+		
+		/* Logo area */
+		.brand-area {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+		
+		.brand-logo {
+			width: 40px;
+			height: 40px;
+			background: #4CAF50;
+			border-radius: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			font-weight: bold;
+			font-size: 18px;
+		}
+		
+		.brand-name {
+			font-size: 1.2rem;
+			font-weight: 600;
+			color: #2c3e50;
+		}
+		
+		/* Responsive adjustments */
+		@media (max-width: 1200px) {
+			.role-cards--compact {
+				flex-wrap: nowrap;
+				overflow-x: auto;
+				padding-bottom: 20px;
+				justify-content: flex-start;
+			}
+			
+			.role-card--compact {
+				min-width: 280px;
+				flex: 0 0 auto;
+			}
+			
+			.workflow-steps {
+				grid-template-columns: repeat(2, 1fr);
+				gap: 30px;
+			}
+			
+			.workflow-steps:before {
+				display: none;
+			}
+		}
+		
+		@media (max-width: 1024px) {
+			.role-card--compact {
+				padding: 30px 25px;
+			}
+			
+			.how-it-works {
+				padding: 50px 30px;
+			}
+		}
+		
+		@media (max-width: 768px) {
+			.top-actions {
+				flex-direction: column;
+				gap: 20px;
+				text-align: center;
+			}
+			
+			.auth-actions {
+				justify-content: center;
+				gap: 10px;
+			}
+			
+			.main-header h1 {
+				font-size: 2.2rem;
+			}
+			
+			.main-header h2 {
+				font-size: 1.1rem;
+			}
+			
+			/* Keep cards in single line even on mobile - make them scrollable */
+			.role-cards--compact {
+				flex-wrap: nowrap;
+				overflow-x: auto;
+				justify-content: flex-start;
+				padding: 10px 0 30px;
+				-webkit-overflow-scrolling: touch;
+			}
+			
+			.role-card--compact {
+				min-width: 280px;
+				flex: 0 0 auto;
+				margin-right: 15px;
+			}
+			
+			.role-card--compact:last-child {
+				margin-right: 0;
+			}
+			
+			.workflow-steps {
+				grid-template-columns: 1fr;
+				gap: 40px;
+			}
+			
+			.step {
+				max-width: 400px;
+				margin: 0 auto;
+			}
+			
+			.how-it-works {
+				padding: 40px 20px;
+				margin: 40px 0;
+			}
+			
+			.how-it-works-title {
+				font-size: 2rem;
+				margin-bottom: 40px;
+			}
+			
+			.footer-content {
+				flex-direction: column;
+				align-items: center;
+				text-align: center;
+			}
+		}
+		
+		@media (max-width: 480px) {
+			.auth-actions {
+				flex-direction: column;
+				width: 100%;
+			}
+			
+			.auth-link {
+				width: 100%;
+			}
+			
+			.main-header h1 {
+				font-size: 1.8rem;
+			}
+			
+			.role-card--compact {
+				padding: 25px 20px;
+				min-width: 260px;
+			}
+			
+			.role-icon {
+				font-size: 3rem;
+			}
+			
+			.role-card--compact h2 {
+				font-size: 1.5rem;
+			}
+			
+			.how-it-works-title {
+				font-size: 1.8rem;
+			}
+			
+			.step-number {
+				width: 50px;
+				height: 50px;
+				font-size: 1.5rem;
+			}
+			
+			.step h3 {
+				font-size: 1.3rem;
+				min-height: auto;
+			}
+		}
+		
+		/* Animation for cards */
+		@keyframes fadeInUp {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+		
+		.role-card--compact {
+			animation: fadeInUp 0.6s ease forwards;
+			opacity: 0;
+		}
+		
+		.role-card--compact:nth-child(1) { animation-delay: 0.1s; }
+		.role-card--compact:nth-child(2) { animation-delay: 0.2s; }
+		.role-card--compact:nth-child(3) { animation-delay: 0.3s; }
+		
+		.step {
+			animation: fadeInUp 0.6s ease forwards;
+			opacity: 0;
+		}
+		
+		.step:nth-child(1) { animation-delay: 0.4s; }
+		.step:nth-child(2) { animation-delay: 0.5s; }
+		.step:nth-child(3) { animation-delay: 0.6s; }
+		.step:nth-child(4) { animation-delay: 0.7s; }
+		
+		/* Scrollbar styling for cards */
+		.role-cards--compact::-webkit-scrollbar {
+			height: 8px;
+		}
+		
+		.role-cards--compact::-webkit-scrollbar-track {
+			background: #f1f1f1;
+			border-radius: 10px;
+		}
+		
+		.role-cards--compact::-webkit-scrollbar-thumb {
+			background: #4CAF50;
+			border-radius: 10px;
+		}
+		
+		.role-cards--compact::-webkit-scrollbar-thumb:hover {
+			background: #45a049;
+		}
+	</style>
+	</head>
+	<body class="dashboard-body home-page">
+		<header class="main-header">
+			<div class="top-actions">
+				<div class="brand-area">
+					<a href="blockchain-status.html" class="auth-link demo" style="font-size: 12px; padding: 5px 15px;">
+						🔗 Blockchain Status
+					</a>
+				</div>
+				<div class="auth-actions">
+					<a href="login.html" class="auth-link">Login</a>
+					<a href="signup.html" class="auth-link primary">Signup</a>
+				</div>
+			</div>
+			<h1>Blockchain Powered Fake Product Detection</h1>
+			<h2>The Future of Product Authentication</h2>
+		</header>
+
+		<main class="main-content">
+			<!-- Role Cards Section - ALL 3 CARDS IN ONE LINE -->
+			<section class="role-cards-container">
+				<h2 class="role-cards-title">Choose Your Role</h2>
+				<div class="role-cards--compact">
+					<a href="#" onclick="selectRole('manufacturer')" class="role-card role-card--compact">
+						<span class="role-icon" aria-hidden="true">🏭</span>
+						<h1>Manufacturer</h1>
+						<p class="card-tagline">Secure • Transparent • Reliable</p>
+						<p class="card-note">Register authentic batches and onboard verified sellers.</p>
+					</a>
+					<a href="#" onclick="selectRole('seller')" class="role-card role-card--compact">
+						<span class="role-icon" aria-hidden="true">🛒</span>
+						<h1>Seller</h1>
+						<p class="card-tagline">Secure • Transparent • Reliable</p>
+						<p class="card-note">Sell blockchain-tracked products directly to consumers.</p>
+					</a>
+					<a href="#" onclick="selectRole('consumer')" class="role-card role-card--compact">
+						<span class="role-icon" aria-hidden="true">🔍</span>
+						<h1>Consumer</h1>
+						<p class="card-tagline">Secure • Transparent • Reliable</p>
+						<p class="card-note">Verify product authenticity before every purchase.</p>
+					</a>
+				</div>
+			</section>
+
+			<!-- How It Works Section - UPDATED DESIGN -->
+			<section class="how-it-works">
+				<h2 class="how-it-works-title">How It Works</h2>
+				<div class="workflow-steps">
+					<div class="step step-highlight">
+						<div class="step-number">1</div>
+						<div class="step-icon">📋</div>
+						<h3>Manufacturer Registration</h3>
+						<p>Manufacturers complete KYC verification and register their products on the blockchain for immutable record-keeping.</p>
+					</div>
+					<div class="step">
+						<div class="step-number">2</div>
+						<div class="step-icon">🔗</div>
+						<h3>Product Tracking</h3>
+						<p>Each product receives a unique blockchain ID with QR code, tracking its complete journey from factory to consumer.</p>
+					</div>
+					<div class="step">
+						<div class="step-number">3</div>
+						<div class="step-icon">🚚</div>
+						<h3>Seller Distribution</h3>
+						<p>Verified sellers receive blockchain-authenticated products, ensuring supply chain integrity at every transfer.</p>
+					</div>
+					<div class="step">
+						<div class="step-number">4</div>
+						<div class="step-icon">✅</div>
+						<h3>Consumer Verification</h3>
+						<p>Consumers scan QR codes to instantly verify product authenticity against the blockchain before purchase.</p>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<!-- Footer -->
+		<footer class="main-footer">
+			<div class="footer-content">
+				<div class="footer-section">
+					<h3>Fake Product Detection</h3>
+					<p>Revolutionizing product authentication using blockchain technology to ensure transparency and trust in every transaction.</p>
+				</div>
+				<div class="footer-section">
+					<h3>Quick Links</h3>
+					<ul class="footer-links">
+						<li><a href="index.html">Home</a></li>
+						<li><a href="manufacturerRegistration.html">Manufacturer Registration</a></li>
+						<li><a href="login.html">Login</a></li>
+						<li><a href="signup.html">Signup</a></li>
+					</ul>
+				</div>
+				<div class="footer-section">
+					<h3>Contact</h3>
+					<ul class="footer-links">
+						<li>Email: support@fakeproductdetection.com</li>
+						<li>Phone: +1 (555) 123-4567</li>
+						<li>Address: 123 Blockchain Street, Tech City</li>
+					</ul>
+				</div>
+			</div>
+			<div class="copyright">
+				<p>&copy; 2024 Fake Product Detection System. All rights reserved. | Blockchain Powered Anti-Counterfeit Solution</p>
+			</div>
+		</footer>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/web3.min.js"></script>
+	<script src="js/truffle-contract.js"></script>
+	<script src="js/demo-controller.js"></script>
+	
+	<script>
+		// Initialize demo controller if not exists
+		if (typeof demoController === 'undefined') {
+			window.demoController = {
+				quickStartDemo: function() {
+					alert("🚀 Starting Quick Demo Mode!\n\nFor demo purposes, you'll be using pre-verified accounts:\n\n• Manufacturer: Demo Account #1\n• Seller: Demo Account #2\n• Consumer: Demo Account #3\n\nClick OK to continue to the manufacturer dashboard.");
+					window.location.href = "manufacturer.html";
+				}
+			};
+		}
+		
+		// Wallet Connection Logic
+		document.addEventListener('DOMContentLoaded', () => {
+			const connectWalletBtn = document.getElementById('connectWallet');
+			const logoutBtn = document.getElementById('logoutBtn');
+			const walletAddressSpan = document.getElementById('walletAddress');
+			const walletInfoDiv = document.getElementById('walletInfo');
+
+			// Check if wallet is already connected
+			checkConnectedWallet();
+
+			// Connect Wallet Button
+			if (connectWalletBtn) {
+				connectWalletBtn.addEventListener('click', connectWallet);
+			}
+
+			// Logout Button
+			if (logoutBtn) {
+				logoutBtn.addEventListener('click', logoutWallet);
+			}
+
+			// Check if wallet is connected on page load
+			function checkConnectedWallet() {
+				const savedAddress = localStorage.getItem('walletAddress');
+				if (savedAddress) {
+					displayWalletInfo(savedAddress);
+				}
+			}
+
+			// Connect Wallet Function
+			async function connectWallet() {
+				if (typeof window.ethereum === 'undefined') {
+					alert('Please install MetaMask or another Ethereum wallet!');
+					return;
+				}
+
+				try {
+					// Request account access
+					const accounts = await window.ethereum.request({
+						method: 'eth_requestAccounts'
+					});
+
+					const address = accounts[0];
+					displayWalletInfo(address);
+					localStorage.setItem('walletAddress', address);
+
+					// Optional: Listen for account changes
+					window.ethereum.on('accountsChanged', (accounts) => {
+						if (accounts.length === 0) {
+							logoutWallet();
+						} else {
+							displayWalletInfo(accounts[0]);
+							localStorage.setItem('walletAddress', accounts[0]);
+						}
+					});
+
+					// Optional: Listen for chain changes
+					window.ethereum.on('chainChanged', () => {
+						window.location.reload();
+					});
+
+				} catch (error) {
+					console.error('Error connecting wallet:', error);
+					alert('Error connecting wallet. Please try again.');
+				}
+			}
+
+			// Display Wallet Info
+			function displayWalletInfo(address) {
+				const shortAddress = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+				if (walletAddressSpan) walletAddressSpan.textContent = shortAddress;
+				if (walletInfoDiv) walletInfoDiv.style.display = 'flex';
+				if (connectWalletBtn) connectWalletBtn.style.display = 'none';
+			}
+
+			// Logout Wallet
+			function logoutWallet() {
+				localStorage.removeItem('walletAddress');
+				if (walletInfoDiv) walletInfoDiv.style.display = 'none';
+				if (connectWalletBtn) connectWalletBtn.style.display = 'inline-flex';
+			}
+		});
+	</script>
+	<script>
+function selectRole(role) {
+    localStorage.setItem('selectedRole', role);
+    window.location.href = 'signup.html';
+}
+</script>
+
+	</body>
+</html>

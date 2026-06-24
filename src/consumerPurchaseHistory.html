@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Fake Product Identification</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: 'Roboto', sans-serif;
+      }
+      .header-section {
+        background: linear-gradient(135deg, #4CAF50 0%,#4CAF50 100%);
+        color: white;
+        padding: 30px 0;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      .header-section h1 {
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .header-section p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+      .content-section {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 25px;
+        margin-bottom: 30px;
+      }
+      .nav-tabs {
+        border-bottom: 2px solid #e9ecef;
+        margin-bottom: 20px;
+      }
+      .nav-tabs .nav-link {
+        border: none;
+        color: #495057;
+        font-weight: 500;
+        padding: 12px 25px;
+      }
+      .nav-tabs .nav-link.active {
+        color: #1a237e;
+        border-bottom: 3px solid #1a237e;
+        background-color: transparent;
+      }
+      .form-control {
+        border-radius: 4px;
+        padding: 12px 15px;
+        border: 1px solid #ced4da;
+      }
+      .btn-warning {
+        background-color: #ff9800;
+        border-color: #ff9800;
+        color: white;
+        font-weight: 500;
+        padding: 12px 30px;
+        border-radius: 4px;
+      }
+      .btn-warning:hover {
+        background-color: #f57c00;
+        border-color: #f57c00;
+      }
+      .matrix {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .matrix td {
+        padding: 10px;
+      }
+      .matrix label {
+        font-weight: 500;
+        margin-bottom: 5px;
+        display: block;
+      }
+      .purchase-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .purchase-table th {
+        background-color: #f8f9fa;
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 2px solid #dee2e6;
+      }
+      .purchase-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #dee2e6;
+      }
+      .wallet-info {
+        text-align: center;
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="container">
+        <h1>BLOCKCHAIN POWERED FAKE PRODUCT DETECTION</h1>
+        <p>Purchase History - View your complete product purchase history</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Navigation Tabs -->
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="manufacturer.html">Manufacturer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="seller.html">Seller</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="consumer.html">Consumer</a>
+        </li>
+      </ul>
+
+      <!-- Query Form Section -->
+      <div class="content-section">
+        <h2>Query Purchase History</h2>
+        <p>Enter your consumer code to retrieve all products purchased</p>
+        
+        <div class="matrix">
+          <table width="100%">
+            <tr width="100%">
+              <td width="15%" align="center">
+                <label for="consumerCode">Consumer Code</label>
+              </td>
+              <td width="30%">
+                <input class="form-control" id="consumerCode" name="consumerCode" type="text" placeholder="Enter your consumer code" />
+              </td>
+              <td width="55%">
+                <button type="submit" class="btn btn-warning btn-register" id="register" style="margin-left: 20px;">Get Purchase History</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Products Table Section -->
+      <div class="content-section">
+        <h2>Products Purchased</h2>
+        <p>Your complete purchase history with verification details</p>
+        
+        <table class="purchase-table">
+          <thead>
+            <tr>
+              <th>Product SN</th>
+              <th>Seller Code</th>
+              <th>Manufacturer Code</th>
+              
+            </tr>
+          </thead>
+          <tbody id="logdata">
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 40px; color: #a0aec0;">
+                No purchase history found. Enter your consumer code to query purchases.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="wallet-info">
+          <p>Your wallet address: <b id="add"></b></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/consumerPurchaseHistory.js"></script>
+    <script>
+      // Wallet Connection Logic
+      document.addEventListener('DOMContentLoaded', () => {
+        const connectWalletBtn = document.getElementById('connectWallet');
+        const logoutWalletBtn = document.getElementById('logoutWallet');
+        const walletAddressSpan = document.getElementById('walletAddress');
+        const walletInfoDiv = document.getElementById('walletInfo');
+
+        checkConnectedWallet();
+
+        if (connectWalletBtn) connectWalletBtn.addEventListener('click', connectWallet);
+        if (logoutWalletBtn) logoutWalletBtn.addEventListener('click', logoutWallet);
+
+        function checkConnectedWallet() {
+          const savedAddress = localStorage.getItem('walletAddress');
+          if (savedAddress) {
+            displayWalletInfo(savedAddress);
+          }
+        }
+
+        async function connectWallet() {
+          if (typeof window.ethereum === 'undefined') {
+            alert('Please install MetaMask or another Ethereum wallet!');
+            return;
+          }
+
+          try {
+            const accounts = await window.ethereum.request({
+              method: 'eth_requestAccounts'
+            });
+
+            const address = accounts[0];
+            displayWalletInfo(address);
+            localStorage.setItem('walletAddress', address);
+
+            window.ethereum.on('accountsChanged', (accounts) => {
+              if (accounts.length === 0) {
+                logoutWallet();
+              } else {
+                displayWalletInfo(accounts[0]);
+                localStorage.setItem('walletAddress', accounts[0]);
+              }
+            });
+
+            window.ethereum.on('chainChanged', () => {
+              window.location.reload();
+            });
+
+          } catch (error) {
+            console.error('Error connecting wallet:', error);
+            alert('Error connecting wallet. Please try again.');
+          }
+        }
+
+        function displayWalletInfo(address) {
+          const shortAddress = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+          if (walletAddressSpan) {
+            walletAddressSpan.textContent = shortAddress;
+            walletAddressSpan.title = address;
+          }
+          if (walletInfoDiv) {
+            walletInfoDiv.style.display = 'flex';
+          }
+          if (connectWalletBtn) {
+            connectWalletBtn.style.display = 'none';
+          }
+        }
+
+        function logoutWallet() {
+          localStorage.removeItem('walletAddress');
+          if (walletInfoDiv) {
+            walletInfoDiv.style.display = 'none';
+          }
+          if (connectWalletBtn) {
+            connectWalletBtn.style.display = 'inline-flex';
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Fake Product Identification - Manufacturer Registration</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: 'Roboto', sans-serif;
+      }
+      .header-section {
+        background: linear-gradient(135deg, #4CAF50 0%,#4CAF50 100%);
+        color: white;
+        padding: 30px 0;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      .content-section {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 30px;
+        margin-bottom: 30px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        font-weight: 500;
+        margin-bottom: 5px;
+        display: block;
+      }
+      .form-control {
+        border-radius: 4px;
+        padding: 10px 15px;
+        border: 1px solid #ced4da;
+        width: 100%;
+      }
+      .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+        font-weight: 500;
+        padding: 12px 30px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .status-pending {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+      }
+      .status-verified {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+      }
+      .status-revoked {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header-section">
+      <div class="container">
+        <h1>BLOCKCHAIN POWERED FAKE PRODUCT DETECTION</h1>
+        <p>Manufacturer Registration (KYC)</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="manufacturerRegistration.html">Register Manufacturer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="adminPanel.html">Admin Panel</a>
+        </li>
+      </ul>
+
+      <div class="content-section">
+        <h2>Manufacturer Registration</h2>
+        <p>Submit your KYC documents to register as a manufacturer. After submission, wait for admin approval.</p>
+        
+        <div id="manufacturerStatus" style="display: none;"></div>
+
+        <form id="manufacturerRegistrationForm">
+          <div class="form-group">
+            <label>Company Name *</label>
+            <input class="form-control" id="companyName" type="text" required minlength="3" placeholder="Enter company name (min 3 characters)" />
+          </div>
+
+          <div class="form-group">
+            <label>Registration Number *</label>
+            <input class="form-control" id="registrationNumber" type="text" required placeholder="Format: XX-XXXX-XXXXX" />
+          </div>
+
+          <div class="form-group">
+            <label>Tax ID *</label>
+            <input class="form-control" id="taxId" type="text" required maxlength="15" minlength="15" placeholder="15 characters alphanumeric" />
+          </div>
+
+          <div class="form-group">
+            <label>Physical Address *</label>
+            <textarea class="form-control" id="physicalAddress" required minlength="10" placeholder="Enter full address (min 10 characters)"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input class="form-control" id="phone" type="tel" required pattern="[0-9]{10}" maxlength="10" placeholder="10 digits only" />
+          </div>
+
+          <div class="form-group">
+            <label>Email *</label>
+            <input class="form-control" id="email" type="email" required placeholder="example@domain.com" />
+          </div>
+
+          <div class="form-group">
+            <label>Government ID *</label>
+            <input class="form-control" id="governmentId" type="text" required placeholder="Government ID (will be hashed)" />
+          </div>
+
+          <div class="form-group">
+            <label>Document Proof Hash (IPFS) *</label>
+            <input class="form-control" id="documentProof" type="text" required placeholder="IPFS hash of documents" />
+          </div>
+          <!-- Replace the existing form buttons section with this -->
+<!-- DEMO CONTROLS SECTION - WITH INLINE JAVASCRIPT -->
+<div align="center" style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 2px solid #4CAF50;">
+    <h4 style="margin-bottom: 15px; color: #333; font-weight: bold;"> </h4>
+    
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 15px;">
+        <button type="button" class="btn btn-primary" 
+                onclick="autoFillDemoForm()" 
+                style="background: #b07227; border-color: #b07b27; padding: 12px 24px; font-weight: bold;">
+            Auto-fill Demo Data
+        </button>
+        
+        <button type="button" class="btn btn-primary" 
+                onclick="quickStartDemo()" 
+                style="background: #4CAF50; border-color: #4CAF50; padding: 12px 24px; font-weight: bold;">
+             Submit Registration 
+        </button>
+        
+       <!-- <button type="button" class="btn btn-primary" 
+                onclick="fullFlowDemo()" 
+                style="background: #2196F3; border-color: #2196F3; padding: 12px 24px; font-weight: bold;">
+            🔄 Full Flow Demo
+        </button>-->
+    </div>
+    
+    <p style="margin-top: 15px; font-size: 14px; color: #666; font-style: italic;">
+        <strong>Note:</strong> Demo mode bypasses real KYC verification for testing purposes.
+    </p>
+</div>
+
+<!-- INLINE JAVASCRIPT - WILL DEFINITELY WORK -->
+<script>
+// Test function
+function testDemo() {
+   
+}
+
+// Auto-fill form function
+function autoFillDemoForm() {
+    
+    
+    // Fill all form fields
+    document.getElementById('companyName').value = "Apple Inc. (Demo)";
+    document.getElementById('registrationNumber').value = "US-2023-12345";
+    document.getElementById('taxId').value = "GSTIN27ABCDE1234F";
+    document.getElementById('physicalAddress').value = "One Apple Park Way, Cupertino, CA 95014, USA";
+    document.getElementById('phone').value = "9876543210";
+    document.getElementById('email').value = "demo@apple.com";
+    document.getElementById('governmentId').value = "PASSPORT-A1234567";
+    document.getElementById('documentProof').value = "QmXyZ123abc456def789ghi";
+    
+    
+}
+
+// Quick Start Demo function
+function quickStartDemo() {
+
+  localStorage.setItem("manufacturerRegistrationStatus", "pending");
+
+    
+    // Store demo data in localStorage
+    localStorage.setItem('demoMode', 'true');
+    localStorage.setItem('demoManufacturer', '0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2');
+    localStorage.setItem('demoManufacturerId', 'DEMO_MFG_APPLE_001');
+    localStorage.setItem('demoManufacturerName', 'Apple Inc. (Demo)');
+    
+    // Show success message
+    setTimeout(function() {
+       
+        window.location.href ='adminPanel.html';
+    }, 500);
+}
+
+// Full Flow Demo function
+function fullFlowDemo() {
+    
+    
+    // Auto-fill form first
+    autoFillDemoForm();
+    
+    // Then simulate submission
+    setTimeout(function() {
+        
+        
+        setTimeout(function() {
+           
+            
+            // Set demo flags
+            localStorage.setItem('demoMode', 'true');
+            localStorage.setItem('demoManufacturer', '0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2');
+            localStorage.setItem('demoManufacturerId', 'DEMO_MFG_APPLE_001');
+            localStorage.setItem('demoManufacturerName', 'Apple Inc. (Demo)');
+            
+            setTimeout(function() {
+                
+                window.location.href = 'manufacturer.html';
+            }, 1000);
+            
+        }, 2000);
+    }, 1000);
+}
+
+// Reset Demo function
+function resetDemo() {
+    localStorage.removeItem('demoMode');
+    localStorage.removeItem('demoManufacturer');
+    localStorage.removeItem('demoManufacturerId');
+    localStorage.removeItem('demoManufacturerName');
+   
+    
+    if (window.location.pathname.includes('manufacturer.html')) {
+        window.location.reload();
+    }
+}
+
+// Check if page loaded
+console.log("Demo functions loaded successfully!");
+
+</script>
+
+<!-- Add a simple test button -->
+<div align="center" style="margin-top: 10px;">
+   
+</div>
+
+
+        </form>
+      </div>
+    </div>
+    <!-- <script src="js/test.js"></script> -->
+     <script>
+/* ===============================
+   MANUFACTURER REGISTRATION GUARD
+   =============================== */
+document.addEventListener("DOMContentLoaded", function () {
+
+  const role = localStorage.getItem("lastSignupRole");
+  const status = localStorage.getItem("manufacturerRegistrationStatus");
+
+  // Only manufacturers allowed
+  if (role !== "manufacturer") {
+    window.location.href = "login.html";
+    return;
+  }
+
+  // If already approved → go to dashboard
+  if (status === "approved") {
+    window.location.href = "manufacturer.html";
+    return;
+  }
+
+  // If not submitted yet, initialize status
+  if (!status) {
+    localStorage.setItem("manufacturerRegistrationStatus", "not_submitted");
+  }
+});
+</script>
+
+    <script src="js/demo-controller.js"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/manufacturerRegistration.js"></script>
+    <script>
+    // Ensure jQuery is loaded
+    if (typeof jQuery === 'undefined') {
+        document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"><\/script>');
+    }
+</script>
+  </body>
+</html>
+

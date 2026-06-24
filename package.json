@@ -1,0 +1,25 @@
+{
+  "name": "fake-product-identification",
+  "version": "1.0.0",
+  "description": "project on blockchain",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "html5-qrcode": "^2.2.0",
+    "lite-server": "^2.6.1"
+  },
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^2.1.15",
+    "bcryptjs": "^3.0.3",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^8.23.0",
+    "open": "^11.0.0",
+    "path-to-regexp": "^6.3.0"
+  }
+}
