@@ -6,24 +6,22 @@ FraudBlock is a blockchain-powered product verification system designed to comba
 
 By leveraging blockchain technology, FraudBlock ensures transparency, security, and tamper-proof product records, helping customers identify genuine products and reducing the circulation of counterfeit goods.
 
-📸 Screenshots
-🏠 Home Page
+## 📸 Screenshots
 
+### Home Page
+![Home Page](screenshots/homepage.jpeg)
 
+### Manufacturer Registration
+![Manufacturer Registration](screenshots/manufacturer-registration.jpeg)
 
+### Seller Dashboard
+![Seller Dashboard](screenshots/seller-dashboard.jpeg)
 
-🏭 Manufacturer Registration
+### Consumer Dashboard
+![Consumer Dashboard](screenshots/consumer-dashboard.jpeg)
 
-
-
-
-🛒 Seller Dashboard
-
-
-
-
-👤 Consumer Dashboard
-
+### Product Verification
+![Product Verification](screenshots/scan-product.jpeg)
 
 
 
