@@ -8,20 +8,33 @@ By leveraging blockchain technology, FraudBlock ensures transparency, security, 
 
 ## 📸 Screenshots
 
-### Home Page
-![Home Page](screenshots/homepage.jpeg)
+### 🏠 Home Page
 
-### Manufacturer Registration
-![Manufacturer Registration](screenshots/manufacturer-registration.jpeg)
+![Home Page](./screenshots/homepage.jpeg)
 
-### Seller Dashboard
-![Seller Dashboard](screenshots/seller-dashboard.jpeg)
+---
 
-### Consumer Dashboard
-![Consumer Dashboard](screenshots/consumer-dashboard.jpeg)
+### 🏭 Manufacturer Registration
 
-### Product Verification
-![Product Verification](screenshots/scan-product.jpeg)
+![Manufacturer Registration](./screenshots/manufacture%20registration.jpeg)
+
+---
+
+### 🛒 Seller Dashboard
+
+![Seller Dashboard](./screenshots/seller%20dashboard.jpeg)
+
+---
+
+### 👤 Consumer Dashboard
+
+![Consumer Dashboard](./screenshots/consumer%20dashboard.jpeg)
+
+---
+
+### 🔍 Product Verification
+
+![Product Verification](./screenshots/scan%20product.jpeg)
 
 
 
